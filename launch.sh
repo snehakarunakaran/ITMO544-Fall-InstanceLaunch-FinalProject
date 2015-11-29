@@ -1,5 +1,5 @@
 #!/bin/bash
-./cleanup.sh
+#./cleanup.sh
 
 
 
@@ -49,6 +49,12 @@ echo "\n"
 #Instance with load balancer
 
 aws elb register-instances-with-load-balancer --load-balancer-name $ELBNAME --instances ${instanceARR[@]}
+
+#ELB session stickiness policy 
+
+COOKIENAME='FINALCPNSK'
+aws elb create-lb-cookie-stickiness-policy --load-balancer-name $ELBNAME --policy-name $COOKIENAME
+aws elb set-load-balancer-policies-of-listener --load-balancer-name $ELBNAME --load-balancer-port 80 --policy-names $COOKIENAME
 
 #Health Check Configuration
 
